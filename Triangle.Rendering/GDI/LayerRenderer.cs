@@ -33,6 +33,7 @@ namespace TriangleNet.Rendering.GDI
             // 4 = voronoi overlay
             // 5 = vector field
             // 6 = contour lines
+            // 7 = Center of Gravity point
 
             int i = 0;
 
@@ -59,6 +60,10 @@ namespace TriangleNet.Rendering.GDI
                             break;
                         case 5:
                         case 6:
+                            break;
+                        case 7:
+                            RenderCoG(layer);
+                            break;
                         default:
                             break;
                     }
@@ -113,6 +118,11 @@ namespace TriangleNet.Rendering.GDI
             {
                 meshRenderer.RenderEdges(layer.Points.Data, layer.Indices.Data, Context.ColorManager.VoronoiLine);
             }
+        }
+
+        private void RenderCoG(IRenderLayer layer)
+        {
+            meshRenderer.RenderPointMarker(layer.Points.Data[0], layer.Points.Data[1], 10, new Pen(Color.Red, 1.5f));
         }
     }
 }

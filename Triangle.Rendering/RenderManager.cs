@@ -104,6 +104,11 @@ namespace TriangleNet.Rendering
             }
         }
 
+        public void Set(Point point)
+        {
+            context.Add(point);
+        }
+
         /// <summary>
         /// Set data for Voronoi layer.
         /// </summary>

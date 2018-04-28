@@ -14,3 +14,11 @@ C:\Users\Eva\Desktop\Triangle.NET\Triangle.Rendering\obj\Debug\Triangle.Renderin
 C:\Users\Eva\Desktop\Triangle.NET\Triangle.Rendering\obj\Debug\Triangle.Rendering.csproj.CoreCompileInputs.cache
 C:\Users\Eva\Desktop\Triangle.NET\Triangle.Rendering\obj\Debug\Triangle.Rendering.dll
 C:\Users\Eva\Desktop\Triangle.NET\Triangle.Rendering\obj\Debug\Triangle.Rendering.pdb
+C:\Users\Eva\source\repos\CoG-Calculator\Triangle.Rendering\bin\Debug\Triangle.Rendering.dll
+C:\Users\Eva\source\repos\CoG-Calculator\Triangle.Rendering\bin\Debug\Triangle.Rendering.pdb
+C:\Users\Eva\source\repos\CoG-Calculator\Triangle.Rendering\bin\Debug\Triangle.dll
+C:\Users\Eva\source\repos\CoG-Calculator\Triangle.Rendering\bin\Debug\Triangle.pdb
+C:\Users\Eva\source\repos\CoG-Calculator\Triangle.Rendering\obj\Debug\Triangle.Rendering.csprojResolveAssemblyReference.cache
+C:\Users\Eva\source\repos\CoG-Calculator\Triangle.Rendering\obj\Debug\Triangle.Rendering.csproj.CoreCompileInputs.cache
+C:\Users\Eva\source\repos\CoG-Calculator\Triangle.Rendering\obj\Debug\Triangle.Rendering.dll
+C:\Users\Eva\source\repos\CoG-Calculator\Triangle.Rendering\obj\Debug\Triangle.Rendering.pdb

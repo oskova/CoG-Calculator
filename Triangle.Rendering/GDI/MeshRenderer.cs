@@ -6,6 +6,7 @@
 
 namespace TriangleNet.Rendering.GDI
 {
+    using System.Collections.Generic;
     using System.Drawing;
     using TriangleNet.Rendering.GDI.Native;
 
@@ -168,6 +169,23 @@ namespace TriangleNet.Rendering.GDI
                     g.DrawLine(pen, p0, p1);
                 }
             }
+        }
+
+        public void RenderPointMarker(float x, float y, float size, Pen pen)
+        {
+            PointF point = new PointF(x, y);
+            Context.Zoom.WorldToScreen(ref point);
+
+
+            float halfSize = size / 2;
+            List<PointF> points = new List<PointF>();
+            points.Add(new PointF(point.X - halfSize, point.Y - halfSize));
+            points.Add(new PointF(point.X + halfSize, point.Y + halfSize));
+            points.Add(new PointF(point.X - halfSize, point.Y + halfSize));
+            points.Add(new PointF(point.X + halfSize, point.Y - halfSize));
+
+            RenderTarget.DrawLine(pen, points[0], points[1]);
+            RenderTarget.DrawLine(pen, points[2], points[3]);
         }
     }
 }

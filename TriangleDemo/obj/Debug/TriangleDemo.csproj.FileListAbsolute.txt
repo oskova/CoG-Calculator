@@ -28,3 +28,17 @@ C:\Users\Eva\Desktop\Triangle.NET\TriangleDemo\obj\Debug\TriangleDemo.csproj.Gen
 C:\Users\Eva\Desktop\Triangle.NET\TriangleDemo\obj\Debug\TriangleDemo.csproj.CoreCompileInputs.cache
 C:\Users\Eva\Desktop\Triangle.NET\TriangleDemo\obj\Debug\TriangleDemo.exe
 C:\Users\Eva\Desktop\Triangle.NET\TriangleDemo\obj\Debug\TriangleDemo.pdb
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\bin\Debug\TriangleDemo.exe.config
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\bin\Debug\TriangleDemo.exe
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\bin\Debug\TriangleDemo.pdb
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\bin\Debug\geometry3Sharp.dll
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\bin\Debug\Triangle.dll
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\bin\Debug\Triangle.Rendering.dll
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\bin\Debug\Triangle.Rendering.pdb
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\bin\Debug\Triangle.pdb
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\obj\Debug\TriangleDemo.csprojResolveAssemblyReference.cache
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\obj\Debug\TriangleDemo.MainWindow.resources
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\obj\Debug\TriangleDemo.csproj.GenerateResource.Cache
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\obj\Debug\TriangleDemo.csproj.CoreCompileInputs.cache
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\obj\Debug\TriangleDemo.exe
+C:\Users\Eva\source\repos\CoG-Calculator\TriangleDemo\obj\Debug\TriangleDemo.pdb

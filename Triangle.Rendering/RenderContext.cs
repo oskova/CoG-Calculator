@@ -32,6 +32,7 @@ namespace TriangleNet.Rendering
             renderLayers.Add(new RenderLayer()); // 4 = voronoi overlay
             renderLayers.Add(new RenderLayer()); // 5 = vector field
             renderLayers.Add(new RenderLayer()); // 6 = contour lines
+            renderLayers.Add(new RenderLayer()); // 7 = Center of Gravity point
 
             RenderLayers[1].IsEnabled = true;
             RenderLayers[2].IsEnabled = true;
@@ -148,6 +149,12 @@ namespace TriangleNet.Rendering
             RenderLayers[0].AttachLayerData(data);
 
             RenderLayers[0].IsEnabled = true;
+        }
+
+        public void Add(Point point)
+        {
+            RenderLayers[7].SetPoints(new List<Point> { point });
+            RenderLayers[7].IsEnabled = true;
         }
 
         public void Enable(int layer, bool enabled)

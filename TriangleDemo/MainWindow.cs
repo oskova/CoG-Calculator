@@ -12,10 +12,35 @@ namespace TriangleDemo
 {
     public partial class MainWindow : Form
     {
+        Graph graph;
         public MainWindow()
         {
             InitializeComponent();
-            Graph Graph = new Graph(this);
+            graph = new Graph(this);
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                graph.LoadInputFile(openFileDialog.FileName);
+                graph.RenderFloorPlan();
+            }
+        }
+
+        private void btnTriangulate_Click(object sender, EventArgs e)
+        {
+            graph.RenderTriangles();
+        }
+
+        private void btnCoG_Click(object sender, EventArgs e)
+        {
+            graph.RenderCoG();
+        }
+
+        private void MainWindow_Resize(object sender, EventArgs e)
+        {
+            graph.Resize();
         }
     }
 }

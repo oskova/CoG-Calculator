@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -18,42 +18,81 @@ namespace TriangleDemo
 {
     class Graph
     {
-        private StringBuilder filePath = new StringBuilder(@"C:\Users\Eva\Desktop\Triangle.NET\triangle.poly"); //  C:\Users\Eva\Desktop\Triangle.NET\triangle.poly   @"C:\Users\Michal\Desktop\triangle.poly"
         private IPolygon input;
+        private IMesh mesh;
+        private IRenderControl control;
         private RenderManager renderManager;
         private MainWindow myGui;
-
-        private System.Drawing.Point[] TVert = new System.Drawing.Point[3];
-        private double[] TSide = new double[4];
-        private List<double> TContent = new List<double>();
-        private double[] Sum_TCenterXS_TCenterYS_S = new double[3];
-        private System.Drawing.Point ObjCenter;
-        private double[] AverageCenter = new double[2];
-        private int TNumber = 0;
 
         public Graph(MainWindow window)
         {
             myGui = window;
-            input = FileProcessor.Read(filePath.ToString());
-            IMesh mesh = input.Triangulate();
+            renderManager = new RenderManager();
+            control = new TriangleNet.Rendering.GDI.RenderControl();
 
-           // TriangleCentres = new List<System.Drawing.Point>();            
+
+            if (control != null)
+            {
+                InitializeRenderControl((Control)control);
+                renderManager.Initialize(control);
+                control.Refresh();
+            }
+            else
+            {
+                MessageBox.Show("Ooops ...", "Failed to initialize renderer.");
+            }
+        }
+
+        public void LoadInputFile(string inputFile)
+        {
+            CsvReader csvReader = new CsvReader();
+            input = csvReader.Read(inputFile);
+        }
+
+        public void RenderFloorPlan()
+        {
+            renderManager.Set(input);
+            control.Refresh();
+        }
+
+        public void RenderTriangles()
+        {
+            mesh = input.Triangulate();
+            renderManager.Set(mesh, true);
+            control.Refresh();
+        }
+
+        public void RenderCoG()
+        {
+            renderManager.Set(CalculateCenterOfGravity());
+            control.Refresh();
+        }
+
+        public void Resize()
+        {
+            control.HandleResize();
+            control.Refresh();
+        }
+
+        private TriangleNet.Geometry.Point CalculateCenterOfGravity()
+        {
+            TriangleNet.Geometry.Point[] TVert = new TriangleNet.Geometry.Point[3];
+            double[] TSide = new double[4];
+            List<double> TContent = new List<double>();
+            double[] Sum_TCenterXS_TCenterYS_S = new double[3];
+            TriangleNet.Geometry.Point ObjCenter = new TriangleNet.Geometry.Point();
+            double[] AverageCenter = new double[2];
+            int TNumber = 0;
+
+            // TriangleCentres = new List<System.Drawing.Point>();            
             foreach (Triangle triangle in mesh.Triangles)
             {
-                Console.WriteLine("--- Triangle ---");
-                Console.WriteLine("Id:" + triangle.ID);
-                Console.WriteLine("Area:" + triangle.Area);
-                Console.WriteLine("Label:" + triangle.Label);
-                Console.WriteLine("Vertex 0: [" + triangle.GetVertex(0).X.ToString() + "; " + triangle.GetVertex(0).Y.ToString() + "]");
-                Console.WriteLine("Vertex 1: [" + triangle.GetVertex(1).X.ToString() + "; " + triangle.GetVertex(1).Y.ToString() + "]");
-                Console.WriteLine("Vertex 2: [" + triangle.GetVertex(2).X.ToString() + "; " + triangle.GetVertex(2).Y.ToString() + "]");
-
-
                 //ulozim vrcholy trojuholnika do pola
                 for (int i = 0; i < 3; i++)
                 {
-                    TVert[i].X = Convert.ToInt32(triangle.GetVertex(i).X);
-                    TVert[i].Y = Convert.ToInt32(triangle.GetVertex(i).Y);
+                    TVert[i] = new TriangleNet.Geometry.Point();
+                    TVert[i].X = triangle.GetVertex(i).X;
+                    TVert[i].Y = triangle.GetVertex(i).Y;
                 }
                 //dlzka stran do pola + polovicny obsah (pre heronov vzorec)
                 TSide[3] = 0;
@@ -89,8 +128,8 @@ namespace TriangleDemo
             }
             //suradnice taziska objektu
             double[] ObjCen = new double[2];
-            ObjCenter.X = Convert.ToInt32(Sum_TCenterXS_TCenterYS_S[0] / Sum_TCenterXS_TCenterYS_S[2]);
-            ObjCenter.Y = Convert.ToInt32(Sum_TCenterXS_TCenterYS_S[1] / Sum_TCenterXS_TCenterYS_S[2]);
+            ObjCenter.X = Sum_TCenterXS_TCenterYS_S[0] / Sum_TCenterXS_TCenterYS_S[2];
+            ObjCenter.Y = Sum_TCenterXS_TCenterYS_S[1] / Sum_TCenterXS_TCenterYS_S[2];
             ObjCen[0] = (Sum_TCenterXS_TCenterYS_S[0] / Sum_TCenterXS_TCenterYS_S[2]);
             ObjCen[1] = (Sum_TCenterXS_TCenterYS_S[1] / Sum_TCenterXS_TCenterYS_S[2]);
 
@@ -102,24 +141,7 @@ namespace TriangleDemo
             Console.WriteLine("Object Center (weighted average): [" + ObjCen[0].ToString() + "; " + ObjCen[1].ToString() + "]");
             Console.WriteLine("Object Center (average): [" + AverageCenter[0].ToString() + "; " + AverageCenter[1].ToString() + "]");
 
-
-            renderManager = new RenderManager();
-
-            IRenderControl control = new TriangleNet.Rendering.GDI.RenderControl();
-
-            if (control != null)
-            {
-                InitializeRenderControl((Control)control);
-                renderManager.Initialize(control);
-                renderManager.Set(input);
-                renderManager.Set(mesh, true);
-                control.Refresh();
-
-            }
-            else
-            {
-                MessageBox.Show("Ooops ...", "Failed to initialize renderer.");
-            }
+            return new TriangleNet.Geometry.Point(ObjCen[0], ObjCen[1]);
         }
 
         private void InitializeRenderControl(Control control)
