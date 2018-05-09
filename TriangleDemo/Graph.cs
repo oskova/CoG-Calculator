@@ -23,12 +23,16 @@ namespace TriangleDemo
         private IRenderControl control;
         private RenderManager renderManager;
         private MainWindow myGui;
+        public ConstraintOptions Options { get; set; }
 
         public Graph(MainWindow window)
         {
             myGui = window;
             renderManager = new RenderManager();
             control = new TriangleNet.Rendering.GDI.RenderControl();
+            Options = new ConstraintOptions();
+            Options.ConformingDelaunay = false;
+            Options.SegmentSplitting = 0;
 
 
             if (control != null)
@@ -39,7 +43,7 @@ namespace TriangleDemo
             }
             else
             {
-                MessageBox.Show("Ooops ...", "Failed to initialize renderer.");
+                MessageBox.Show("Error", "Failed to initialize renderer.");
             }
         }
 
@@ -55,16 +59,43 @@ namespace TriangleDemo
             control.Refresh();
         }
 
-        public void RenderTriangles()
+        public List<TriangleNet.Geometry.Point> CalculateCoG()
         {
-            mesh = input.Triangulate();
+            if (input == null)
+            {
+                return null;
+            }
+            List<TriangleNet.Geometry.Point> CoGs = new List<TriangleNet.Geometry.Point>();
+            mesh = input.Triangulate(new ConstraintOptions { ConformingDelaunay = true });
+            CoGs.Add(CalculateCenterOfGravity());
+            renderManager.SetConformingCoG(CoGs[0]);
+            mesh = input.Triangulate(new ConstraintOptions { ConformingDelaunay = false });
+            CoGs.Add(CalculateCenterOfGravity());
+            renderManager.SetConstrianedCoG(CoGs[1]);
+            return CoGs;
+        }
+
+        public void RenderTriangles(bool visible)
+        {
+            if (input == null)
+            {
+                return;
+            }
+            mesh = input.Triangulate(Options);
             renderManager.Set(mesh, true);
+            renderManager.Enable(1, visible);
             control.Refresh();
         }
 
-        public void RenderCoG()
+        public void RenderConformingCoG(bool visible)
         {
-            renderManager.Set(CalculateCenterOfGravity());
+            renderManager.Enable(7, visible);
+            control.Refresh();
+        }
+
+        public void RenderConstrainedCoG(bool visible)
+        {
+            renderManager.Enable(8, visible);
             control.Refresh();
         }
 

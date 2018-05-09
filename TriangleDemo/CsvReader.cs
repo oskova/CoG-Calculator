@@ -13,7 +13,7 @@ namespace TriangleDemo
         //private List<ISegment> Segments;
         public IPolygon InputPolygon { get; set; }
 
-        const double TOLERANCE = 1.000001;
+        private double TOLERANCE = 1.000001;
 
         public CsvReader()
         {
@@ -39,6 +39,20 @@ namespace TriangleDemo
             int positionYColumnIndex = Array.IndexOf(header, "Position Y");
 
             IEnumerable<string[]> linesList = csv.Where(o => o[nameColumnIndex] == "Line");
+            List<double> pointsListX = new List<double>();
+            pointsListX.AddRange(linesList.Select(o => double.Parse(o[startXColumnIndex], CultureInfo.InvariantCulture)));
+            pointsListX.AddRange(linesList.Select(o => double.Parse(o[endXColumnIndex], CultureInfo.InvariantCulture)));
+            List<double> pointsListY = new List<double>();
+            pointsListY.AddRange(linesList.Select(o => double.Parse(o[startYColumnIndex], CultureInfo.InvariantCulture)));
+            pointsListY.AddRange(linesList.Select(o => double.Parse(o[endYColumnIndex], CultureInfo.InvariantCulture)));
+
+            var minX = pointsListX.Min();
+            var minY = pointsListY.Min();
+            var maxX = pointsListX.Max();
+            var maxY = pointsListY.Max();
+            double diagonal = Math.Sqrt(Math.Pow(maxX - minX, 2) + Math.Pow(maxY - minY, 2));
+            TOLERANCE = diagonal * 0.01;
+
 
             foreach (string[] line in linesList)
             {

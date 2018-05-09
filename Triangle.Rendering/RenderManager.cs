@@ -104,11 +104,15 @@ namespace TriangleNet.Rendering
             }
         }
 
-        public void Set(Point point)
+        public void SetConformingCoG(Point point)
         {
-            context.Add(point);
+            context.Add(point, 7);
         }
-
+        public void SetConstrianedCoG(Point point)
+        {
+            context.Add(point, 8);
+        }
+        
         /// <summary>
         /// Set data for Voronoi layer.
         /// </summary>
