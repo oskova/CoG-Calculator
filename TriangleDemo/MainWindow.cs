@@ -18,14 +18,25 @@ namespace TriangleDemo
             InitializeComponent();
             graph = new Graph(this);
         }
+        
+        public void RefreshGraph()
+        {
+            graph.csvReader.Read();
+            graph.RenderFloorPlan();
+        }
 
         private void btnLoad_Click(object sender, EventArgs e)
-        {
+        {   
+            //vyberem subor
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                //nacitam a zobrazim subor
+    //            SetToleranceFactor();
                 graph.LoadInputFile(openFileDialog.FileName);
                 graph.RenderFloorPlan();
-                List<TriangleNet.Geometry.Point> points = graph.CalculateCoG();
+                //ratam tazisko
+                List<TriangleNet.Geometry.Point> points = graph.CalculateCoGs();
+                //zapisem do textboxov
                 if (points != null)
                 {
                     tbConformingCoGX.Text = points[0].X.ToString();
@@ -33,7 +44,11 @@ namespace TriangleDemo
                     tbConstrainedCoGX.Text = points[1].X.ToString();
                     tbConstrainedCoGY.Text = points[1].Y.ToString();
                 }
-                label.Text = openFileDialog.FileName;
+                //napisem do labelu nazov fileu
+                labelFileName.Text = openFileDialog.FileName;
+                //trianguluj ak je zakliknute
+                ConstrainedTriangulate(chbConstrainedTriangulate.Checked);
+                ConformingTriangulate(chbConformingTriangulate.Checked);
             }
         }
 
@@ -43,12 +58,20 @@ namespace TriangleDemo
             graph.Resize();
         }
 
+        //trianguluj constrained Delaunay
+        private void ConstrainedTriangulate(bool visible)
+        {
+            graph.Options.ConformingDelaunay = false;
+            graph.RenderTriangles(visible);
+        }
+
         private void chbConstrainedTriangulate_Clicked(object sender, EventArgs e)
         {
+            //klik na checkbox trianguluj constrained Delaunay
             CheckBox checkbox = (CheckBox)sender;
-            graph.Options.ConformingDelaunay = false;
-            graph.RenderTriangles(checkbox.Checked);
-            chbConformingTriangulate.Checked = false;
+            ConstrainedTriangulate(checkbox.Checked);
+            if (checkbox.Checked)
+                chbConformingTriangulate.Checked = false;
         }
 
         private void chbConstrainedCoG_CheckedChanged(object sender, EventArgs e)
@@ -57,12 +80,18 @@ namespace TriangleDemo
             graph.RenderConstrainedCoG(checkbox.Checked);
         }
 
+        private void ConformingTriangulate(bool visible)
+        {
+            graph.Options.ConformingDelaunay = true;
+            graph.RenderTriangles(visible);
+        }
+
         private void chbConformingTriangulate_Clicked(object sender, EventArgs e)
         {
             CheckBox checkbox = (CheckBox)sender;
-            graph.Options.ConformingDelaunay = true;
-            graph.RenderTriangles(checkbox.Checked);
-            chbConstrainedTriangulate.Checked = false;
+            ConformingTriangulate(checkbox.Checked);
+            if (checkbox.Checked)
+                chbConstrainedTriangulate.Checked = false;
         }
 
         private void chbConformingCoG_CheckedChanged(object sender, EventArgs e)
@@ -70,5 +99,32 @@ namespace TriangleDemo
             CheckBox checkbox = (CheckBox)sender;
             graph.RenderConformingCoG(checkbox.Checked);
         }
+
+        private void SetToleranceFactor()
+        {
+            if (Convert.ToDouble(tbToleranceFactor.Text) >= 0 && Convert.ToDouble(tbToleranceFactor.Text) <= 100)
+            {
+                graph.csvReader.ToleranceFactor = Convert.ToDouble(tbToleranceFactor.Text) * 0.01;
+            }
+            else
+            {
+                graph.csvReader.ToleranceFactor = 0.005;
+                tbToleranceFactor.Text = "0.5";
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            if (graph.csvReader != null)
+            {
+                SetToleranceFactor();
+                graph.input = graph.csvReader.Read();
+                graph.RenderFloorPlan();
+
+                ConstrainedTriangulate(chbConstrainedTriangulate.Checked);
+                ConformingTriangulate(chbConformingTriangulate.Checked);
+            }
+        }
+                
     }
 }

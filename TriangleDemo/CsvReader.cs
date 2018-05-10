@@ -12,20 +12,26 @@ namespace TriangleDemo
         private List<Vertex> Vertexes;
         //private List<ISegment> Segments;
         public IPolygon InputPolygon { get; set; }
-
-        private double TOLERANCE = 1.000001;
+        public double ToleranceFactor { get; set; }
+        private double TOLERANCE;
+        private string[] lines;
 
         public CsvReader()
         {
             Vertexes = new List<Vertex>();
             //Segments = new List<ISegment>();
-            InputPolygon = new Polygon();
+            InputPolygon = new Polygon();            
         }
 
-        public IPolygon Read(string filePath)
+        public void OpenFile(string filePath)
         {
-            var lines = File.ReadAllLines(filePath);
+            lines = File.ReadAllLines(filePath);
+        }
 
+        public IPolygon Read()
+        {
+            Vertexes = new List<Vertex>();
+            InputPolygon = new Polygon();
             var header = lines[0].Split(',').ToArray();
             var csv = from line in lines.Skip(1)
                       select (line.Split(',').ToArray());
@@ -38,22 +44,11 @@ namespace TriangleDemo
             int positionXColumnIndex = Array.IndexOf(header, "Position X");
             int positionYColumnIndex = Array.IndexOf(header, "Position Y");
 
+            // nacitam ciary
             IEnumerable<string[]> linesList = csv.Where(o => o[nameColumnIndex] == "Line");
-            List<double> pointsListX = new List<double>();
-            pointsListX.AddRange(linesList.Select(o => double.Parse(o[startXColumnIndex], CultureInfo.InvariantCulture)));
-            pointsListX.AddRange(linesList.Select(o => double.Parse(o[endXColumnIndex], CultureInfo.InvariantCulture)));
-            List<double> pointsListY = new List<double>();
-            pointsListY.AddRange(linesList.Select(o => double.Parse(o[startYColumnIndex], CultureInfo.InvariantCulture)));
-            pointsListY.AddRange(linesList.Select(o => double.Parse(o[endYColumnIndex], CultureInfo.InvariantCulture)));
-
-            var minX = pointsListX.Min();
-            var minY = pointsListY.Min();
-            var maxX = pointsListX.Max();
-            var maxY = pointsListY.Max();
-            double diagonal = Math.Sqrt(Math.Pow(maxX - minX, 2) + Math.Pow(maxY - minY, 2));
-            TOLERANCE = diagonal * 0.01;
-
-
+            //vyratam TOLERANCE
+            CalculateTolerance(startXColumnIndex, startYColumnIndex, endXColumnIndex, endYColumnIndex, linesList);
+            //pridam segmenty polygonu
             foreach (string[] line in linesList)
             {
                 double startX = double.Parse(line[startXColumnIndex], CultureInfo.InvariantCulture);
@@ -65,18 +60,39 @@ namespace TriangleDemo
                 //Segments.Add(segment);
                 InputPolygon.Add(segment);
             }
-
+            //pridam diery
             foreach (string[] line in csv.Where(o => o[nameColumnIndex] == "Hole"))
             {
                 double X = double.Parse(line[positionXColumnIndex], CultureInfo.InvariantCulture);
                 double Y = double.Parse(line[positionYColumnIndex], CultureInfo.InvariantCulture);
                 InputPolygon.Holes.Add(new Point(X, Y));
             }
-            return InputPolygon;
+            return InputPolygon;    //mam hotovy polygon
+        }
+
+        //metoda na ratanie TOLERANCE - tolerancia bude uzivatelom zadane percento diametra mnoziny bodov
+        private void CalculateTolerance(int startXColumnIndex, int startYColumnIndex,
+                                                 int endXColumnIndex, int endYColumnIndex, 
+                                                 IEnumerable<string[]> linesList)
+        {
+            List<double> pointsListX = new List<double>();
+            pointsListX.AddRange(linesList.Select(o => double.Parse(o[startXColumnIndex], CultureInfo.InvariantCulture)));
+            pointsListX.AddRange(linesList.Select(o => double.Parse(o[endXColumnIndex], CultureInfo.InvariantCulture)));
+            List<double> pointsListY = new List<double>();
+            pointsListY.AddRange(linesList.Select(o => double.Parse(o[startYColumnIndex], CultureInfo.InvariantCulture)));
+            pointsListY.AddRange(linesList.Select(o => double.Parse(o[endYColumnIndex], CultureInfo.InvariantCulture)));
+
+            var minX = pointsListX.Min();
+            var minY = pointsListY.Min();
+            var maxX = pointsListX.Max();
+            var maxY = pointsListY.Max();
+            double diameter = Math.Sqrt(Math.Pow(maxX - minX, 2) + Math.Pow(maxY - minY, 2));
+            TOLERANCE = diameter * ToleranceFactor;
         }
 
         private Vertex GetVertex(double x, double y)
         {
+            //hladanie zhody so zadanym bodom (vramci tolerancie) - predchadza dieram v polygone
             Vertex vertex = Vertexes.FirstOrDefault(o => Math.Abs(o.X - x) < TOLERANCE &&
                                                          Math.Abs(o.Y - y) < TOLERANCE);
             if (vertex == null)

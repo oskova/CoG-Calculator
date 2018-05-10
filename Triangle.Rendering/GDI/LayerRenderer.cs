@@ -62,7 +62,10 @@ namespace TriangleNet.Rendering.GDI
                         case 6:
                             break;
                         case 7:
-                            RenderCoG(layer);
+                            RenderCoG(layer, Color.Red);
+                            break;
+                        case 8:
+                            RenderCoG(layer, Color.Green);
                             break;
                         default:
                             break;
@@ -120,9 +123,9 @@ namespace TriangleNet.Rendering.GDI
             }
         }
 
-        private void RenderCoG(IRenderLayer layer)
+        private void RenderCoG(IRenderLayer layer, Color color)
         {
-            meshRenderer.RenderPointMarker(layer.Points.Data[0], layer.Points.Data[1], 10, new Pen(Color.Red, 1.5f));
+            meshRenderer.RenderPointMarker(layer.Points.Data[0], layer.Points.Data[1], 10, new Pen(color, 1.5f));
         }
     }
 }

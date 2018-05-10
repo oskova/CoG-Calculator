@@ -31,21 +31,25 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnLoad = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.label = new System.Windows.Forms.Label();
+            this.labelFileName = new System.Windows.Forms.Label();
             this.GBconforming = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbConformingCoGY = new System.Windows.Forms.TextBox();
+            this.tbConformingCoGX = new System.Windows.Forms.TextBox();
             this.chbConformingCoG = new System.Windows.Forms.CheckBox();
             this.chbConformingTriangulate = new System.Windows.Forms.CheckBox();
             this.GBconstrained = new System.Windows.Forms.GroupBox();
-            this.chbConstrainedCoG = new System.Windows.Forms.CheckBox();
-            this.chbConstrainedTriangulate = new System.Windows.Forms.CheckBox();
-            this.tbConformingCoGX = new System.Windows.Forms.TextBox();
-            this.tbConformingCoGY = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.tbConstrainedCoGY = new System.Windows.Forms.TextBox();
             this.tbConstrainedCoGX = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.chbConstrainedCoG = new System.Windows.Forms.CheckBox();
+            this.chbConstrainedTriangulate = new System.Windows.Forms.CheckBox();
+            this.tbToleranceFactor = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.GBconforming.SuspendLayout();
             this.GBconstrained.SuspendLayout();
             this.SuspendLayout();
@@ -76,15 +80,15 @@
             this.openFileDialog.DefaultExt = "csv";
             this.openFileDialog.Filter = ".csv file|*.csv";
             // 
-            // label
+            // labelFileName
             // 
-            this.label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label.AutoSize = true;
-            this.label.Location = new System.Drawing.Point(134, 578);
-            this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(340, 13);
-            this.label.TabIndex = 4;
-            this.label.Text = "hmmmm, you should select file... ...I mean, if you want... No pressure... ";
+            this.labelFileName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelFileName.AutoSize = true;
+            this.labelFileName.Location = new System.Drawing.Point(134, 578);
+            this.labelFileName.Name = "labelFileName";
+            this.labelFileName.Size = new System.Drawing.Size(340, 13);
+            this.labelFileName.TabIndex = 4;
+            this.labelFileName.Text = "hmmmm, you should select file... ...I mean, if you want... No pressure... ";
             // 
             // GBconforming
             // 
@@ -101,9 +105,43 @@
             this.GBconforming.TabStop = false;
             this.GBconforming.Text = "Conforming Delaunay";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 94);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(17, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Y:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 68);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(17, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "X:";
+            // 
+            // tbConformingCoGY
+            // 
+            this.tbConformingCoGY.Location = new System.Drawing.Point(27, 91);
+            this.tbConformingCoGY.Name = "tbConformingCoGY";
+            this.tbConformingCoGY.Size = new System.Drawing.Size(94, 20);
+            this.tbConformingCoGY.TabIndex = 3;
+            // 
+            // tbConformingCoGX
+            // 
+            this.tbConformingCoGX.Location = new System.Drawing.Point(27, 65);
+            this.tbConformingCoGX.Name = "tbConformingCoGX";
+            this.tbConformingCoGX.Size = new System.Drawing.Size(94, 20);
+            this.tbConformingCoGX.TabIndex = 2;
+            // 
             // chbConformingCoG
             // 
             this.chbConformingCoG.AutoSize = true;
+            this.chbConformingCoG.Checked = true;
+            this.chbConformingCoG.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbConformingCoG.Location = new System.Drawing.Point(9, 42);
             this.chbConformingCoG.Name = "chbConformingCoG";
             this.chbConformingCoG.Size = new System.Drawing.Size(47, 17);
@@ -138,9 +176,43 @@
             this.GBconstrained.TabStop = false;
             this.GBconstrained.Text = "Constrained Delaunay";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 94);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(17, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Y:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 68);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(17, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "X:";
+            // 
+            // tbConstrainedCoGY
+            // 
+            this.tbConstrainedCoGY.Location = new System.Drawing.Point(27, 91);
+            this.tbConstrainedCoGY.Name = "tbConstrainedCoGY";
+            this.tbConstrainedCoGY.Size = new System.Drawing.Size(94, 20);
+            this.tbConstrainedCoGY.TabIndex = 5;
+            // 
+            // tbConstrainedCoGX
+            // 
+            this.tbConstrainedCoGX.Location = new System.Drawing.Point(27, 65);
+            this.tbConstrainedCoGX.Name = "tbConstrainedCoGX";
+            this.tbConstrainedCoGX.Size = new System.Drawing.Size(94, 20);
+            this.tbConstrainedCoGX.TabIndex = 4;
+            // 
             // chbConstrainedCoG
             // 
             this.chbConstrainedCoG.AutoSize = true;
+            this.chbConstrainedCoG.Checked = true;
+            this.chbConstrainedCoG.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbConstrainedCoG.Location = new System.Drawing.Point(9, 42);
             this.chbConstrainedCoG.Name = "chbConstrainedCoG";
             this.chbConstrainedCoG.Size = new System.Drawing.Size(47, 17);
@@ -160,78 +232,56 @@
             this.chbConstrainedTriangulate.UseVisualStyleBackColor = true;
             this.chbConstrainedTriangulate.Click += new System.EventHandler(this.chbConstrainedTriangulate_Clicked);
             // 
-            // tbConformingCoGX
+            // tbToleranceFactor
             // 
-            this.tbConformingCoGX.Location = new System.Drawing.Point(27, 65);
-            this.tbConformingCoGX.Name = "tbConformingCoGX";
-            this.tbConformingCoGX.Size = new System.Drawing.Size(94, 20);
-            this.tbConformingCoGX.TabIndex = 2;
+            this.tbToleranceFactor.Location = new System.Drawing.Point(12, 532);
+            this.tbToleranceFactor.Name = "tbToleranceFactor";
+            this.tbToleranceFactor.Size = new System.Drawing.Size(55, 20);
+            this.tbToleranceFactor.TabIndex = 7;
+            this.tbToleranceFactor.Text = "0,5";
+            this.tbToleranceFactor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // tbConformingCoGY
+            // label5
             // 
-            this.tbConformingCoGY.Location = new System.Drawing.Point(27, 91);
-            this.tbConformingCoGY.Name = "tbConformingCoGY";
-            this.tbConformingCoGY.Size = new System.Drawing.Size(94, 20);
-            this.tbConformingCoGY.TabIndex = 3;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(9, 516);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(58, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Tolerance:";
             // 
-            // tbConstrainedCoGY
+            // label6
             // 
-            this.tbConstrainedCoGY.Location = new System.Drawing.Point(27, 91);
-            this.tbConstrainedCoGY.Name = "tbConstrainedCoGY";
-            this.tbConstrainedCoGY.Size = new System.Drawing.Size(94, 20);
-            this.tbConstrainedCoGY.TabIndex = 5;
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label6.Location = new System.Drawing.Point(70, 533);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(20, 17);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "%";
             // 
-            // tbConstrainedCoGX
+            // btnRefresh
             // 
-            this.tbConstrainedCoGX.Location = new System.Drawing.Point(27, 65);
-            this.tbConstrainedCoGX.Name = "tbConstrainedCoGX";
-            this.tbConstrainedCoGX.Size = new System.Drawing.Size(94, 20);
-            this.tbConstrainedCoGX.TabIndex = 4;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 68);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(17, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "X:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 68);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(17, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "X:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 94);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(17, 13);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Y:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 94);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(17, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "Y:";
+            this.btnRefresh.Location = new System.Drawing.Point(12, 558);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(79, 23);
+            this.btnRefresh.TabIndex = 10;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(831, 598);
+            this.Controls.Add(this.btnRefresh);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.tbToleranceFactor);
             this.Controls.Add(this.GBconstrained);
             this.Controls.Add(this.GBconforming);
-            this.Controls.Add(this.label);
+            this.Controls.Add(this.labelFileName);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.panel1);
             this.Name = "MainWindow";
@@ -251,7 +301,7 @@
         public System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.Label label;
+        private System.Windows.Forms.Label labelFileName;
         private System.Windows.Forms.GroupBox GBconforming;
         private System.Windows.Forms.CheckBox chbConformingCoG;
         private System.Windows.Forms.CheckBox chbConformingTriangulate;
@@ -266,6 +316,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbConstrainedCoGY;
         private System.Windows.Forms.TextBox tbConstrainedCoGX;
+        private System.Windows.Forms.TextBox tbToleranceFactor;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }
 
