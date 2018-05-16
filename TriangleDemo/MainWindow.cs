@@ -30,28 +30,35 @@ namespace TriangleDemo
             //vyberem subor
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                //nacitam a zobrazim subor
-    //            SetToleranceFactor();
+                Console.WriteLine($"\n\nLoading file: '{openFileDialog.FileName}':");
+                //nacitam subor
                 graph.LoadInputFile(openFileDialog.FileName);
-                graph.RenderFloorPlan();
-                //ratam tazisko
-                List<TriangleNet.Geometry.Point> points = graph.CalculateCoGs();
-                //zapisem do textboxov
-                if (points != null)
-                {
-                    tbConformingCoGX.Text = points[0].X.ToString();
-                    tbConformingCoGY.Text = points[0].Y.ToString();
-                    tbConstrainedCoGX.Text = points[1].X.ToString();
-                    tbConstrainedCoGY.Text = points[1].Y.ToString();
-                }
                 //napisem do labelu nazov fileu
                 labelFileName.Text = openFileDialog.FileName;
-                //trianguluj ak je zakliknute
-                ConstrainedTriangulate(chbConstrainedTriangulate.Checked);
-                ConformingTriangulate(chbConformingTriangulate.Checked);
+                InputReloadRender();
             }
         }
 
+        private void InputReloadRender()
+        {
+            graph.RenderFloorPlan();
+
+            //ratam tazisko
+            List<TriangleNet.Geometry.Point> points = graph.CalculateCoGs();
+
+            //zapisem do textboxov
+            if (points != null)
+            {
+                tbConformingCoGX.Text = points[0].X.ToString();
+                tbConformingCoGY.Text = points[0].Y.ToString();
+                tbConstrainedCoGX.Text = points[1].X.ToString();
+                tbConstrainedCoGY.Text = points[1].Y.ToString();
+            }
+            
+            //trianguluj ak je zakliknute
+            ConstrainedTriangulate(chbConstrainedTriangulate.Checked);
+            ConformingTriangulate(chbConformingTriangulate.Checked);            
+        }
 
         private void MainWindow_Resize(object sender, EventArgs e)
         {
@@ -102,11 +109,19 @@ namespace TriangleDemo
 
         private void SetToleranceFactor()
         {
-            if (Convert.ToDouble(tbToleranceFactor.Text) >= 0 && Convert.ToDouble(tbToleranceFactor.Text) <= 100)
+            try
             {
-                graph.csvReader.ToleranceFactor = Convert.ToDouble(tbToleranceFactor.Text) * 0.01;
+                if (Convert.ToDouble(tbToleranceFactor.Text) >= 0 && Convert.ToDouble(tbToleranceFactor.Text) <= 100)
+                {
+                    graph.csvReader.ToleranceFactor = Convert.ToDouble(tbToleranceFactor.Text) * 0.01;
+                }
+                else
+                {
+                    graph.csvReader.ToleranceFactor = 0.005;
+                    tbToleranceFactor.Text = "0.5";
+                }
             }
-            else
+            catch
             {
                 graph.csvReader.ToleranceFactor = 0.005;
                 tbToleranceFactor.Text = "0.5";
@@ -119,12 +134,8 @@ namespace TriangleDemo
             {
                 SetToleranceFactor();
                 graph.input = graph.csvReader.Read();
-                graph.RenderFloorPlan();
-
-                ConstrainedTriangulate(chbConstrainedTriangulate.Checked);
-                ConformingTriangulate(chbConformingTriangulate.Checked);
+                InputReloadRender();
             }
         }
-                
     }
 }

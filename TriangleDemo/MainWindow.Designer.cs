@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnLoad = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -127,6 +128,7 @@
             // 
             this.tbConformingCoGY.Location = new System.Drawing.Point(27, 91);
             this.tbConformingCoGY.Name = "tbConformingCoGY";
+            this.tbConformingCoGY.ReadOnly = true;
             this.tbConformingCoGY.Size = new System.Drawing.Size(94, 20);
             this.tbConformingCoGY.TabIndex = 3;
             // 
@@ -134,6 +136,7 @@
             // 
             this.tbConformingCoGX.Location = new System.Drawing.Point(27, 65);
             this.tbConformingCoGX.Name = "tbConformingCoGX";
+            this.tbConformingCoGX.ReadOnly = true;
             this.tbConformingCoGX.Size = new System.Drawing.Size(94, 20);
             this.tbConformingCoGX.TabIndex = 2;
             // 
@@ -198,6 +201,7 @@
             // 
             this.tbConstrainedCoGY.Location = new System.Drawing.Point(27, 91);
             this.tbConstrainedCoGY.Name = "tbConstrainedCoGY";
+            this.tbConstrainedCoGY.ReadOnly = true;
             this.tbConstrainedCoGY.Size = new System.Drawing.Size(94, 20);
             this.tbConstrainedCoGY.TabIndex = 5;
             // 
@@ -205,6 +209,7 @@
             // 
             this.tbConstrainedCoGX.Location = new System.Drawing.Point(27, 65);
             this.tbConstrainedCoGX.Name = "tbConstrainedCoGX";
+            this.tbConstrainedCoGX.ReadOnly = true;
             this.tbConstrainedCoGX.Size = new System.Drawing.Size(94, 20);
             this.tbConstrainedCoGX.TabIndex = 4;
             // 
@@ -234,6 +239,7 @@
             // 
             // tbToleranceFactor
             // 
+            this.tbToleranceFactor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbToleranceFactor.Location = new System.Drawing.Point(12, 532);
             this.tbToleranceFactor.Name = "tbToleranceFactor";
             this.tbToleranceFactor.Size = new System.Drawing.Size(55, 20);
@@ -243,6 +249,7 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(9, 516);
             this.label5.Name = "label5";
@@ -252,6 +259,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label6.Location = new System.Drawing.Point(70, 533);
@@ -262,6 +270,7 @@
             // 
             // btnRefresh
             // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnRefresh.Location = new System.Drawing.Point(12, 558);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(79, 23);
@@ -284,8 +293,9 @@
             this.Controls.Add(this.labelFileName);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainWindow";
-            this.Text = "Form1";
+            this.Text = "CoG Calculator";
             this.Resize += new System.EventHandler(this.MainWindow_Resize);
             this.GBconforming.ResumeLayout(false);
             this.GBconforming.PerformLayout();

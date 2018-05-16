@@ -28,7 +28,6 @@ namespace TriangleDemo
 
         public Graph(MainWindow window)
         {
-            //csvReader = new CsvReader();
             myGui = window;
             renderManager = new RenderManager();
             control = new TriangleNet.Rendering.GDI.RenderControl();
@@ -49,15 +48,13 @@ namespace TriangleDemo
             }
         }
 
-        //nacitam vstup zo suboru
         public void LoadInputFile(string inputFile)
         {
             csvReader = new CsvReader();
             csvReader.OpenFile(inputFile);
             input = csvReader.Read();            
         }
-
-        //nastavim vstup kniznici a zobrazim
+                
         public void RenderFloorPlan()
         {
             renderManager.Set(input);
@@ -86,7 +83,11 @@ namespace TriangleDemo
             {
                 return;
             }
+            Console.WriteLine($"Starting " + (Options.ConformingDelaunay?"Conforming ":"Constrained") + " Delaunay triangulation...");
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             mesh = input.Triangulate(Options);
+            watch.Stop();
+            Console.WriteLine("Done. Elapsed time: {0} ms", watch.ElapsedMilliseconds);
             renderManager.Set(mesh, false);
             renderManager.Enable(1, visible);
             control.Refresh();
@@ -114,11 +115,8 @@ namespace TriangleDemo
         {
             TriangleNet.Geometry.Point[] TVert = new TriangleNet.Geometry.Point[3];
             double[] TSide = new double[4];
-            ////List<double> TContent = new List<double>();
             double[] Sum_TCenterXS_TCenterYS_S = new double[3];
             TriangleNet.Geometry.Point ObjCenter = new TriangleNet.Geometry.Point();
-            ////double[] AverageCenter = new double[2];
-            ////int TNumber = 0;
                                     
             foreach (Triangle triangle in mesh.Triangles)
             {
@@ -129,54 +127,34 @@ namespace TriangleDemo
                     TVert[i].X = triangle.GetVertex(i).X;
                     TVert[i].Y = triangle.GetVertex(i).Y;
                 }
-                //dlzka stran do pola + polovicny obvod (pre heronov vzorec)
+                //dlzka stran do pola + obvod 
                 TSide[3] = 0;
                 for (int i = 0; i < 3; i++)
                 {
                     TSide[i] = Math.Sqrt(Math.Pow((TVert[i].X - TVert[(i + 1) % 3].X), 2) + Math.Pow((TVert[i].Y - TVert[(i + 1) % 3].Y), 2));
                     TSide[3] += TSide[i];
                 }
-                TSide[3] = TSide[3] / 2;
+
                 //ratame obsah - heronov vzorec 
+                TSide[3] = TSide[3] / 2; 
                 double TS = 0;
                 TS = Math.Sqrt(TSide[3] * (TSide[3] - TSide[0]) * (TSide[3] - TSide[1]) * (TSide[3] - TSide[2]));
-                ////TContent.Add(TS);
-                //Console.WriteLine("Triangle Content: " + TS.ToString());
-                //Console.WriteLine("obvod trojuholnika/2: " + TSide[3].ToString());
-                //Console.WriteLine("Side 0: " + TSide[0].ToString());
-                //Console.WriteLine("Side 1: " + TSide[1].ToString());
-                //Console.WriteLine("Side 2: " + TSide[2].ToString());
-
+                
                 //ratame tazisko trojuholnika                
                 double[] TC = new double[2];
                 TC[0] = TVert[0].X + 2 * ((TVert[1].X + (double)(TVert[2].X - TVert[1].X) / 2) - TVert[0].X) / 3;
                 TC[1] = TVert[0].Y + 2 * ((TVert[1].Y + (double)(TVert[2].Y - TVert[1].Y) / 2) - TVert[0].Y) / 3;
-                Console.WriteLine("Triangle Center: [" + TC[0].ToString() + "; " + TC[1].ToString() + "]");
-
-                //pomocne sumy pre vyratanie celkoveho taziska (weighted average)
+                
+                //pomocne sumy pre vyratanie taziska polygonu
                 Sum_TCenterXS_TCenterYS_S[0] += TC[0] * TS;
                 Sum_TCenterXS_TCenterYS_S[1] += TC[1] * TS;
                 Sum_TCenterXS_TCenterYS_S[2] += TS;
-                //pomocne vypocty pre vyratanie priemerneho taziska
-                ////TNumber++;
-                ////AverageCenter[0] += TC[0];
-                ////AverageCenter[1] += TC[1];
             }
-            //suradnice taziska objektu
-            //double[] ObjCen = new double[2];
+            //suradnice taziska polygonu
             ObjCenter.X = Sum_TCenterXS_TCenterYS_S[0] / Sum_TCenterXS_TCenterYS_S[2];
             ObjCenter.Y = Sum_TCenterXS_TCenterYS_S[1] / Sum_TCenterXS_TCenterYS_S[2];
-            //ObjCen[0] = (Sum_TCenterXS_TCenterYS_S[0] / Sum_TCenterXS_TCenterYS_S[2]);
-            //ObjCen[1] = (Sum_TCenterXS_TCenterYS_S[1] / Sum_TCenterXS_TCenterYS_S[2]);
 
-            ////AverageCenter[0] = AverageCenter[0] / TNumber;
-            ////AverageCenter[1] = AverageCenter[1] / TNumber;
-
-            //Console.WriteLine("--- Object Center ---");
-            //Console.WriteLine("Object Center Int (weighted average): [" + ObjCenter.X.ToString() + "; " + ObjCenter.Y.ToString() + "]");
-            //Console.WriteLine("Object Center (weighted average): [" + ObjCen[0].ToString() + "; " + ObjCen[1].ToString() + "]");
-            //Console.WriteLine("Object Center (average): [" + AverageCenter[0].ToString() + "; " + AverageCenter[1].ToString() + "]");
-
+            //procedura vypluje bod = tazisko
             return new TriangleNet.Geometry.Point(ObjCenter.X, ObjCenter.Y);
         }
 
